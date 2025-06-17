@@ -1,6 +1,7 @@
 const express = require('express');
 const { register } = require('../controllers/authController');
 const authRoute = express.Router();
+const passport = require("passport"); // ✅ <== FIXED
 
 /**
  * @swagger
@@ -38,5 +39,16 @@ const authRoute = express.Router();
  *         description: Bad request
  */
 authRoute.post("/register", register);
-
+authRoute.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+authRoute.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: true,
+  }),
+  (req, res) => {
+    // Successfully logged in
+    res.redirect("http://localhost:5173");
+  }
+);
 module.exports = authRoute;

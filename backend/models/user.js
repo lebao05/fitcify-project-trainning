@@ -18,25 +18,20 @@ const userSchema = new mongoose.Schema(
     isBlocked: {
       type: Boolean,
       default: false,
-    }
+    },
+    googleId: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: {
-      createdAt: "created_at", 
-      updatedAt: "updated_at", 
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     },
   }
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  try {
-    this.password = await bcrypt.hash(this.password, saltRounds);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   try {
