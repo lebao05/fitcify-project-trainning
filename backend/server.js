@@ -8,6 +8,18 @@ const swaggerSpec = require("./configs/swagger");
 const app = express();
 const port = process.env.PORT || 3000;
 const authRoute = require("./routes/authRoute");
+const session = require("express-session");
+const passport = require("passport");
+require("./configs/google");
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
