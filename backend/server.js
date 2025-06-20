@@ -5,6 +5,8 @@ const connection = require("./configs/database");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./configs/swagger");
+const path = require("path");
+const uploadRoutes = require("./routes/upload.routes");
 const app = express();
 const port = process.env.PORT || 3000;
 const authRoute = require("./routes/authRoute");
@@ -25,6 +27,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth", authRoute);
+
+app.use(
+  "/uploads/images",
+  express.static(path.join(__dirname, "uploads/images"))
+);
+
+// Mount router upload image
+app.use("/api/upload", uploadRoutes);
+
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
