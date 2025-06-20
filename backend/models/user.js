@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const crypto = require('crypto');
+const crypto = require("crypto");
 function generateRandomString(length = 32) {
-  return crypto.randomBytes(length).toString('hex').slice(0, length);
+  return crypto.randomBytes(length).toString("hex").slice(0, length);
 }
 const userSchema = new mongoose.Schema(
   {
@@ -98,7 +98,7 @@ userSchema.statics.signupWithEmail = async function ({
 userSchema.statics.authWithGoogle = async function ({ username, googleId }) {
   const existingUser = await this.findOne({ $or: [{ googleId }] });
   if (existingUser) {
-    throw new Error("Google account already in use");
+    return existingUser;
   }
   return await this.create({
     username,
@@ -111,11 +111,11 @@ userSchema.statics.authWithGoogle = async function ({ username, googleId }) {
 // Static method for Facebook signup
 userSchema.statics.authWithFacebook = async function ({
   username,
-  facebookId
+  facebookId,
 }) {
   const existingUser = await this.findOne({ $or: [{ facebookId }] });
   if (existingUser) {
-    throw new Error("Facebook account already in use");
+    return existingUser;
   }
   return await this.create({
     username,

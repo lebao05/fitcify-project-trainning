@@ -1,5 +1,5 @@
-const express = require('express');
-const { register, sendOtp } = require('../controllers/authController');
+const express = require("express");
+const { register, sendOtp } = require("../controllers/authController");
 const authRoute = express.Router();
 const passport = require("passport");
 
@@ -39,27 +39,47 @@ const passport = require("passport");
  *         description: Email already exists
  */
 authRoute.post("/register", register);
-authRoute.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+authRoute.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 authRoute.get(
   "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    session: true,
-  }),
+  (req, res, next) => {
+    // This middleware is to handle the case where the user is not authenticated
+    try {
+      passport.authenticate("google", {
+        failureRedirect: "/login",
+        session: true,
+      })(req, res, next);
+    } catch (error) {}
+  },
   (req, res) => {
-    res.redirect("http://localhost:5173"); 
+    res.redirect("http://localhost:5173");
   }
 );
-authRoute.get("/facebook", passport.authenticate("facebook", { scope: ["email"] }));
+authRoute.get(
+  "/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+);
 // Facebook OAuth callback
 authRoute.get(
   "/facebook/callback",
+  (req, res, next) => {
+    // This middleware is to handle the case where the user is not authenticated
+    try {
+      passport.authenticate("facebook", {
+        failureRedirect: "/login",
+        session: true,
+      })(req, res, next);
+    } catch (error) {}
+  },
   passport.authenticate("facebook", {
     failureRedirect: "/login",
     session: true,
   }),
   (req, res) => {
-    res.redirect("http://localhost:5173"); 
+    res.redirect("http://localhost:5173");
   }
 );
 /**
