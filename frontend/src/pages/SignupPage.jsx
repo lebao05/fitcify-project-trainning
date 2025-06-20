@@ -31,10 +31,12 @@ export default function SpotifyLogin() {
     }
   };
 
-  const handleLoginWithGoogle = () => {
+  const handleSignupWithGoogle = () => {
     window.location.href = "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
   };
-  const handleFacebookLogin = () => {};
+  const handleSignupWithFacebook = () => {
+    window.location.href = "http://localhost:5000/api/auth/facebook"; 
+  }
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleContinue();
@@ -50,7 +52,7 @@ export default function SpotifyLogin() {
             className="login-option google"
             role="button"
             tabIndex={0}
-            onClick={() => handleLoginWithGoogle()}
+            onClick={() => handleSignupWithGoogle()}
           >
             Continue with Google
           </div>
@@ -59,7 +61,7 @@ export default function SpotifyLogin() {
             className="login-option facebook"
             role="button"
             tabIndex={0}
-            onClick={() => handleFacebookLogin()}
+            onClick={() => handleSignupWithFacebook()}
           >
             Continue with Facebook
           </div>

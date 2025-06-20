@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-  from: "lgbaowork05@gmail.com",
+  from: "webservicee99@gmail.com",
   subject: "Forget password",
 };
 
@@ -23,5 +23,4 @@ const sendMail = (email, text,subject) => {
     next(err);
   }
 };
-
 module.exports = { sendMail };

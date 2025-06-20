@@ -10,7 +10,14 @@ const port = process.env.PORT || 3000;
 const authRoute = require("./routes/authRoute");
 const session = require("express-session");
 const passport = require("passport");
-require("./configs/google");
+const cors = require("cors");
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5000"], // your frontend and swagger
+    credentials: true, // allow cookies, sessions, etc.
+  })
+);
+require("./configs/passport");
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

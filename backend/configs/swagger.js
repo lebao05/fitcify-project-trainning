@@ -1,23 +1,20 @@
-// swagger.js
-const swaggerJSDoc = require("swagger-jsdoc");
-require("dotenv").config();
+const swaggerJsdoc = require("swagger-jsdoc");
 
 const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Fitcify API",
+      title: "Your API",
       version: "1.0.0",
-      description: "API documentation for Fitcify",
     },
     servers: [
       {
-        url: "http://localhost:3000", // Your base URL
+        url: "http://localhost:5000", // ✅ must be HTTP or HTTPS
       },
     ],
   },
-  apis: ["./routes/*.js"], // 👈 Path to your API routes with Swagger comments
+  apis: ["./routes/*.js"], // adjust this to your route paths
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJsdoc(options);
 module.exports = swaggerSpec;

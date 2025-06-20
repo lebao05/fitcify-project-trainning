@@ -20,6 +20,9 @@ export default function SpotifyLogin() {
   const handleLoginWithGoogle = () => {
     window.location.href = "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
   };
+  const handleLoginWithFacebook = () => {
+    window.location.href = "http://localhost:5000/api/auth/facebook"; 
+  }
   const handleContinue = async () => {
     if (!email.trim()) {
       setShowError(true);
@@ -40,8 +43,6 @@ export default function SpotifyLogin() {
       // Handle login logic here
     }, 1500);
   };
-
-  const handleFacebookLogin = () => {};
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleContinue();
@@ -66,7 +67,7 @@ export default function SpotifyLogin() {
             className="login-option facebook"
             role="button"
             tabIndex={0}
-            onClick={() => handleFacebookLogin()}
+            onClick={() => handleLoginWithFacebook()}
           >
             Continue with Facebook
           </div>
