@@ -1,45 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import "./App.scss";
 import LoginPage from "./pages/LoginPage";
-// function App() {
-//   const [count, setCount] = useState(0);
-//   const handleLoginWithGoogle = () => {
-//     window.location.href =
-//       "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
-//   };
-//   return (
-//     <>
-//       <div>
-//         <div>
-//           <button onClick={handleLoginWithGoogle}>Sign in with Google</button>
-//         </div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   );
-// }
+import Signuppage from "./pages/SignupPage";
+import HomePage from './pages/HomePage';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage/>} />
+        <Route path="/signup" element={<Signuppage/>} />
+        <Route path="/" element={<HomePage/>} />
       </Routes>
     </Router>
   );

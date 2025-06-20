@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import "./LoginPage.scss";
+import "./SignupPage.scss";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function SpotifyLogin() {
   const [email, setEmail] = useState("");
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const nagivate = useNavigate();
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -17,9 +18,7 @@ export default function SpotifyLogin() {
       setShowError(false);
     }
   };
-  const handleLoginWithGoogle = () => {
-    window.location.href = "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
-  };
+
   const handleContinue = async () => {
     if (!email.trim()) {
       setShowError(true);
@@ -30,17 +29,11 @@ export default function SpotifyLogin() {
       setShowError(true);
       return;
     }
-
-    setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Continue with email:", email);
-      setIsLoading(false);
-      // Handle login logic here
-    }, 1500);
   };
 
+  const handleLoginWithGoogle = () => {
+    window.location.href = "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
+  };
   const handleFacebookLogin = () => {};
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -51,7 +44,7 @@ export default function SpotifyLogin() {
   return (
     <div className="login-page">
       <div className="login-container">
-        <div className="title">Log in to Fitcify</div>
+        <div className="title">Sign up to start listening</div>
         <div className="login-with">
           <div
             className="login-option google"
@@ -101,41 +94,20 @@ export default function SpotifyLogin() {
           </div>
 
           <div className="continue-button">
-            <button
-              onClick={handleContinue}
-              disabled={isLoading}
-              aria-label={isLoading ? "Logging in..." : "Continue"}
-            >
-              {isLoading ? "Logging in..." : "Continue"}
-            </button>
+            <button onClick={handleContinue}>Next</button>
           </div>
         </div>
         <div className="further-options">
           <div className="no-account-registered">
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <span
               className="link"
-              onClick={() => console.log("Navigate to sign up")}
+              onClick={() => nagivate("/login")}
               role="button"
               tabIndex={0}
-              onKeyPress={(e) =>
-                e.key === "Enter" && console.log("Navigate to sign up")
-              }
             >
-              Sign up for Spotify
+              Log in here.
             </span>
-          </div>
-
-          <div
-            className="forgot-password"
-            onClick={() => console.log("Navigate to forgot password")}
-            role="button"
-            tabIndex={0}
-            onKeyPress={(e) =>
-              e.key === "Enter" && console.log("Navigate to forgot password")
-            }
-          >
-            Forgot your password?
           </div>
         </div>
       </div>
