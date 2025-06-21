@@ -8,7 +8,7 @@ const router = express.Router();
 const imagesDir = path.resolve(__dirname, '../uploads/images');
 fs.mkdirSync(imagesDir, { recursive: true });
 
-const storage = multer.diskStorage({
+const Imagestorage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, imagesDir),
   filename: (_req, file, cb) => {
     const ext  = path.extname(file.originalname);
@@ -24,7 +24,7 @@ const imageFilter = (_req, file, cb) => {
 };
 
 const upload = multer({
-  storage,
+  storage: Imagestorage,
   fileFilter: imageFilter,
   limits: { fileSize: 2 * 1024 * 1024 } // 2MB
 });
@@ -40,6 +40,46 @@ router.post(
     const publicPath = `/uploads/images/${req.file.filename}`;
     res.status(201).json({
       message: 'Upload image thành công!',
+      path: publicPath
+    });
+  }
+);
+
+// Tạo thư mục lưu audio nếu chưa có
+const audiosDir = path.resolve(__dirname, '../uploads/audios');
+fs.mkdirSync(audiosDir, { recursive: true });
+
+const Audiostorage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, audiosDir),
+  filename: (_req, file, cb) => {
+    const ext  = path.extname(file.originalname);
+    const name = path.basename(file.originalname, ext);
+    cb(null, `${name}-${Date.now()}${ext}`);
+  }
+});
+
+// Chỉ cho phép upload audio
+const audioFilter = (_req, file, cb) => {
+  if (file.mimetype.startsWith('audio/')) cb(null, true);
+  else cb(new Error('Chỉ cho phép file audio'), false);
+};
+
+const uploadAudio = multer({
+  storage: Audiostorage,
+  fileFilter: audioFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+});
+
+router.post(
+  '/api/upload/audio',
+  uploadAudio.single('audio'),
+  (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'Không có file audio được gửi lên' });
+    }
+    const publicPath = `/uploads/audios/${req.file.filename}`;
+    res.status(201).json({
+      message: 'Upload audio thành công!',
       path: publicPath
     });
   }
