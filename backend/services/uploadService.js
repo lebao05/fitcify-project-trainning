@@ -17,10 +17,10 @@ const Imagestorage = multer.diskStorage({
   }
 });
 
-// (Tuỳ chọn) chỉ cho phép upload image
+// (Optional) allow only image upload
 const imageFilter = (_req, file, cb) => {
   if (file.mimetype.startsWith('image/')) cb(null, true);
-  else cb(new Error('Chỉ cho phép file ảnh'), false);
+  else cb(new Error('Only image files are allowed'), false);
 };
 
 const upload = multer({
@@ -35,17 +35,17 @@ router.post(
   upload.single('image'),
   (req, res) => {
     if (!req.file) {
-      return res.status(400).json({ error: 'Không có file image được gửi lên' });
+      return res.status(400).json({ error: 'No image file uploaded' });
     }
     const publicPath = `/uploads/images/${req.file.filename}`;
     res.status(201).json({
-      message: 'Upload image thành công!',
+      message: 'Image uploaded successfully!',
       path: publicPath
     });
   }
 );
 
-// Tạo thư mục lưu audio nếu chưa có
+// Create directory for audio storage if not exists
 const audiosDir = path.resolve(__dirname, '../uploads/audios');
 fs.mkdirSync(audiosDir, { recursive: true });
 
@@ -58,10 +58,10 @@ const Audiostorage = multer.diskStorage({
   }
 });
 
-// Chỉ cho phép upload audio
+// Allow only audio upload
 const audioFilter = (_req, file, cb) => {
   if (file.mimetype.startsWith('audio/')) cb(null, true);
-  else cb(new Error('Chỉ cho phép file audio'), false);
+  else cb(new Error('Only audio files are allowed'), false);
 };
 
 const uploadAudio = multer({
@@ -75,11 +75,11 @@ router.post(
   uploadAudio.single('audio'),
   (req, res) => {
     if (!req.file) {
-      return res.status(400).json({ error: 'Không có file audio được gửi lên' });
+      return res.status(400).json({ error: 'No audio file uploaded' });
     }
     const publicPath = `/uploads/audios/${req.file.filename}`;
     res.status(201).json({
-      message: 'Upload audio thành công!',
+      message: 'Audio uploaded successfully!',
       path: publicPath
     });
   }
