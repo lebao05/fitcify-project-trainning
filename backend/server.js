@@ -6,7 +6,7 @@ const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./configs/swagger");
 const path = require("path");
-const uploadRoutes = require("./routes/upload.routes");
+const uploadService = require("./services/uploadService");
 const app = express();
 const port = process.env.PORT || 3000;
 const authRoute = require("./routes/authRoute");
@@ -28,13 +28,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth", authRoute);
 
-app.use(
-  "/uploads/images",
-  express.static(path.join(__dirname, "uploads/images"))
-);
+app.use("/uploads/images", express.static(path.join(__dirname, "uploads/images")));
 
 // Mount router upload image
-app.use("/api/upload", uploadRoutes);
+app.use(uploadService);
 
 
 app.get("/", (req, res) => {
@@ -42,13 +39,18 @@ app.get("/", (req, res) => {
 });
 app.use(notFound);
 app.use(errorHandler);
-(async () => {
-  try {
-    await connection();
-    app.listen(port, () => {
-      console.log(`✅ Backend Node.js App listening on port ${port}`);
-    });
-  } catch (error) {
-    console.log("❌ Error connect to DB: ", error);
-  }
-})();
+// (async () => {
+//   try {
+//     await connection();
+//     app.listen(port, () => {
+//       console.log(`✅ Backend Node.js App listening on port ${port}`);
+//     });
+//   } catch (error) {
+//     console.log("❌ Error connect to DB: ", error);
+//   }
+// })();
+
+// Start server ngay, không chặn bởi DB
+app.listen(port, () => {
+  console.log(`🚀 Server listening on port ${port} (no DB)`);
+});
