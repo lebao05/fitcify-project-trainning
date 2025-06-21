@@ -39,18 +39,14 @@ app.get("/", (req, res) => {
 });
 app.use(notFound);
 app.use(errorHandler);
-// (async () => {
-//   try {
-//     await connection();
-//     app.listen(port, () => {
-//       console.log(`✅ Backend Node.js App listening on port ${port}`);
-//     });
-//   } catch (error) {
-//     console.log("❌ Error connect to DB: ", error);
-//   }
-// })();
+(async () => {
+  try {
+    await connection();
+    app.listen(port, () => {
+      console.log(`✅ Backend Node.js App listening on port ${port}`);
+    });
+  } catch (error) {
+    console.log("❌ Error connect to DB: ", error);
+  }
+})();
 
-// Start server ngay, không chặn bởi DB
-app.listen(port, () => {
-  console.log(`🚀 Server listening on port ${port} (no DB)`);
-});
