@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth", authRoute);
 
-app.use("/uploads/images", express.static(path.join(__dirname, "uploads/images")));
+app.use('/uploads', express.static('uploads'));
 
 // Mount router upload image
 app.use(uploadService);
