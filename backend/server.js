@@ -5,6 +5,8 @@ const connection = require("./configs/database");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./configs/swagger");
+const path = require("path");
+const uploadService = require("./services/uploadService");
 const app = express();
 const port = process.env.PORT || 3000;
 const authRoute = require("./routes/authRoute");
@@ -32,6 +34,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/auth", authRoute);
+
+app.use('/uploads', express.static('uploads'));
+
+// Mount router upload image
+app.use(uploadService);
+
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -47,3 +56,4 @@ app.use(errorHandler);
     console.log("❌ Error connect to DB: ", error);
   }
 })();
+
