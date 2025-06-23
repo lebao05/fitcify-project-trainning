@@ -50,10 +50,9 @@ app.use(errorHandler);
   try {
     await connection();
     app.listen(port, () => {
-      console.log(`✅ Backend Node.js App listening on port ${port}`);
+      console.log(✅ Backend Node.js App listening on port ${port});
     });
   } catch (error) {
     console.log("❌ Error connect to DB: ", error);
   }
 })();
-
