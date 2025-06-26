@@ -92,7 +92,9 @@ const HeaderBar = () => {
                 {/* Dropdown Menu */}
                 <div className={`navigation-bar ${navOpen ? "active" : ""}`}>
                   <button className="dropdown-item">Account</button>
-                  <button className="dropdown-item">Profile</button>
+                  <button className="dropdown-item"
+                    onClick={() => navigate("/profile")}
+                  >Profile</button>
                   <button className="dropdown-item">Upgrade to Premium</button>
                   <button className="dropdown-item">Support</button>
                   <button className="dropdown-item">Download</button>
