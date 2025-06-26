@@ -1,0 +1,53 @@
+@use '../styles/variables';
+@use '../styles/mixins';
+
+body{
+  background-color: black;
+}
+
+.user-profile{
+  margin-left: 6rem;
+}
+
+section{
+  margin: 2rem 0;
+}
+
+.artist-section{
+  .artists-card-container{
+    display: flex;
+    flex-direction: row;
+    padding-top: 0.5rem;
+    width: 100%;
+  }
+}
+
+.tracks-section{
+  color: white;
+  .tracks-item-container{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.playlists-section{
+  color: white;
+  .playlists-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+
+.following-artists-section{
+  color: white;
+  .following-artists-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1rem;
+  }
+}

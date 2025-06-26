@@ -1,0 +1,35 @@
+@use '../styles/variables';
+@use '../styles/mixins';
+
+.artist-card {
+  color: white;
+  width: 200px;
+  height: 200px;
+  margin-right: 1rem;
+
+  .artist-image{
+    width: 150px;
+    object-fit: cover;
+    height: 150px;
+    border-radius: 100%;
+  }
+
+  .artist-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 50px;
+    text-align: center;
+
+    .artist-name {
+      margin-top: 0.5rem;
+      color: variables.$text-primary;
+    }
+
+    .type{
+      color: variables.$text-secondary;
+      font-size: 13px;
+    }
+  }
+}
+
