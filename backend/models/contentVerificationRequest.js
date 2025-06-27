@@ -13,7 +13,7 @@ const contentVerificationRequestSchema = new Schema({
     },
     artistId: {
         type: Schema.Types.ObjectId,
-        ref: 'User',          // or 'Artist'
+        ref: 'Artist',    
         required: true,
     },
     type: {
@@ -27,9 +27,6 @@ const contentVerificationRequestSchema = new Schema({
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending',
     },
-    documents: [{
-        type: String,
-    }],
     submittedAt: {
         type: Date,
         default: Date.now,

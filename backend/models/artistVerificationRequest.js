@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const artistVerificationRequestSchema = new Schema({
-    artistId: {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: 'User',          // or 'Artist' if you use a separate model
         required: true,
@@ -13,9 +13,6 @@ const artistVerificationRequestSchema = new Schema({
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending',
     },
-    documents: [{
-        type: String,         // URLs to proof-of-identity documents
-    }],
     submittedAt: {
         type: Date,
         default: Date.now,
