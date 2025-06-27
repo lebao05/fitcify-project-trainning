@@ -73,5 +73,13 @@
     .dot {
       margin: 0 8px;
     }
+
+    .following{
+
+      &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
   }
 }
