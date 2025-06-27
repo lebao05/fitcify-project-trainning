@@ -2,58 +2,54 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const crypto = require("crypto");
+const artistProfile = require("./artistProfile");
 function generateRandomString(length = 32) {
   return crypto.randomBytes(length).toString("hex").slice(0, length);
 }
 const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true },
+    /* ───────── primary auth fields ───────── */
+    role: {
+      type: String,
+      enum: ['user', 'artist', 'admin'],   // ✅ only these three values
+      default: 'user',                     // most accounts start as plain users
+      required: true,
+    },
+    artistProfile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'artistProfile'
+    }
+    ,
     email: {
       type: String,
-      required: function () {
-        return this.authProvider === "email";
-      },
-      lowercase: true,
-      trim: true,
+      required() { return this.authProvider === 'email'; },
+      lowercase: true, trim: true,
     },
     password: {
       type: String,
-      required: function () {
-        return !this.googleId && !this.facebookId;
-      },
+      required() { return !this.googleId && !this.facebookId; },
     },
-    role: {
-      type: String,
-      default: "user",
-      enum: ["user", "admin", "artist"],
-    },
-    isBlocked: {
-      type: Boolean,
-      default: false,
-    },
-    googleId: {
-      type: String,
-      default: null,
-      sparse: true,
-    },
-    facebookId: {
-      type: String,
-      default: null,
-      sparse: true,
-    },
-    authProvider: {
-      type: String,
-      enum: ["email", "google", "facebook"],
-      default: "email",
-    },
+
+    /* ───────── role & social login ───────── */
+    role: { type: String, enum: ['user', 'artist', 'admin'], default: 'user' },
+    googleId: { type: String, default: null, sparse: true },
+    facebookId: { type: String, default: null, sparse: true },
+    authProvider: { type: String, enum: ['email', 'google', 'facebook'], default: 'email' },
+
+    /* ───────── music-app additions ───────── */
+    avatarUrl: { type: String, default: '' },
+    isPremium: { type: Boolean, default: false },
+    subscribedUntil: { type: Date, default: null },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    followees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
+    /* ───────── admin flags ───────── */
+    isBlocked: { type: Boolean, default: false },
   },
-  {
-    timestamps: {
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-    },
-  }
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
 );
+
 
 // Hash password before saving if it's an email-based signup
 userSchema.pre("save", async function (next) {

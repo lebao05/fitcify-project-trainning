@@ -28,5 +28,4 @@ router.get(
 );
 
 router.post('/send-otp', sendOtp);
-
 module.exports = router;
