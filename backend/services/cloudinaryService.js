@@ -6,7 +6,6 @@ const uploadToCloudinary = async (filePath, folder = 'uploads') => {
     const result = await cloudinary.uploader.upload(filePath, {
       folder: folder,
     });
-  
     fs.unlinkSync(filePath);
     return result;
   } catch (err) {

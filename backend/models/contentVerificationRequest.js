@@ -13,7 +13,7 @@ const contentVerificationRequestSchema = new Schema({
     },
     artistId: {
         type: Schema.Types.ObjectId,
-        ref: 'Artist',    
+        ref: 'Artist',
         required: true,
     },
     type: {
@@ -40,6 +40,6 @@ const contentVerificationRequestSchema = new Schema({
 });
 
 module.exports = mongoose.model(
-    'contentVerificationRequest',
+    'ContentVerificationRequest',
     contentVerificationRequestSchema
 );
