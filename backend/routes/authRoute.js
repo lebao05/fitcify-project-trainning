@@ -1,8 +1,9 @@
 // routes/authRoute.js
-const express  = require('express');
+const express = require('express');
 const passport = require('passport');
 const { register, sendOtp } = require('../controllers/authController');
-
+const { generateAccessToken } = require('../services/authService')
+const authController = require('../controllers/authController')
 const router = express.Router();
 
 router.post('/register', register);
@@ -14,7 +15,9 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login', session: true }),
-  (_req, res) => res.redirect('http://localhost:5173')
+  (_req, res) => {
+    res.redirect('http://localhost:5173')
+  }
 );
 
 router.get(
@@ -28,4 +31,6 @@ router.get(
 );
 
 router.post('/send-otp', sendOtp);
+router.post('/signup-gmail', authController.signupWithGmail);
+router.post('/login/password', authController.loginWithPassword);
 module.exports = router;

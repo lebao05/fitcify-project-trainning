@@ -19,8 +19,24 @@ const userSchema = new mongoose.Schema(
     artistProfile: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'artistProfile'
-    }
-    ,
+    },
+    dateOfBirth: {
+      type: Date,
+      validate: {
+        validator: (v) => {
+          const earliest = new Date("1940-01-01");
+          const today = new Date();
+          return v >= earliest && v < today;
+        },
+        message:
+          "unvalid date of birth",
+      },
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+      default: "other",
+    },
     email: {
       type: String,
       required() { return this.authProvider === 'email'; },
