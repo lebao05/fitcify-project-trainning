@@ -1,6 +1,7 @@
 // SpotifyProfile.jsx
 import React, { useState } from 'react';
 import ProfileHeader from '../components/ProfileHeader.jsx';
+import HorizontalDots from '../components/HorizontalDots.jsx';
 import SectionHeader from '../components/SectionHeader.jsx';
 import ArtistCard from '../components/ArtistCard.jsx';
 import TrackItem from '../components/TrackItem.jsx';
@@ -94,6 +95,7 @@ const UserProfile = () => {
   return (
     <div className="user-profile">
       <ProfileHeader user={user} />
+      <HorizontalDots user={user}/>
 
       <div className="profile-content">
           {/* Top Artists */}

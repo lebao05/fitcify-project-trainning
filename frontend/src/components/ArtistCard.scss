@@ -1,6 +1,7 @@
 @use '../styles/variables';
 @use '../styles/mixins';
 
+
 .artist-card {
   color: white;
   width: 175px;
@@ -9,7 +10,7 @@
   
   &:hover{
     cursor: pointer;
-    background-color: #252424; // xám xàm nhẹ
+    background-color: #252424; 
   }
 
   .artist-image-container {

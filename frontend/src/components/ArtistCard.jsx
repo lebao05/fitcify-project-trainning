@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
 import './ArtistCard.scss';

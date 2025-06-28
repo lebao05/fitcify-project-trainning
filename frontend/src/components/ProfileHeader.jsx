@@ -1,10 +1,8 @@
 import './ProfileHeader.scss';
-import { Outlet } from 'react-router-dom';
 
 const ProfileHeader = ({user}) => {
   return (
-    <div> 
-      <Outlet />
+    <div>
       <div className="profile-header">
         <div className="avatar-section">
           <img src={user.avatar} alt="avatar" className="avatar" />
@@ -14,10 +12,9 @@ const ProfileHeader = ({user}) => {
           </div>
         </div>
 
-        <div className="profile-info"> 
+        <div className="profile-info">
           <p>Profile</p>
           <p className="username">{user.name}</p>
-
           <p className="info">
             <span>{user.publicPlaylists} Public Playlist</span>
             <span className="dot">•</span>
