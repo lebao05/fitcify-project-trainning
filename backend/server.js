@@ -11,6 +11,9 @@ const authRoute = require("./routes/authRoute");
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
+const adminArtistRoute = require('./routes/adminArtistRoute');
+app.use('/api/admin/artists', adminArtistRoute);
+
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:5000"], // your frontend and swagger

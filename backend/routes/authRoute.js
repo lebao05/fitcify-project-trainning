@@ -1,11 +1,14 @@
 // routes/authRoute.js
 const express  = require('express');
 const passport = require('passport');
-const { register, sendOtp } = require('../controllers/authController');
+const { register, sendOtp, login } = require('../controllers/authController');
 
 const router = express.Router();
 
 router.post('/register', register);
+router.post('/login', login); // ✅ thêm dòng này để login email/password
+
+router.post('/send-otp', sendOtp);
 
 router.get(
   '/google',
@@ -27,5 +30,4 @@ router.get(
   (_req, res) => res.redirect('http://localhost:5173')
 );
 
-router.post('/send-otp', sendOtp);
 module.exports = router;

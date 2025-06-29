@@ -34,4 +34,15 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = { authMiddleware };
+const verifyAdmin = async (req, res, next) => {
+  if (!req.user) {
+    return res.status(403).json({ ER: 1, EM: "Forbidden: Not logged in" });
+  }
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ ER: 1, EM: "Forbidden: Admins only" });
+  }
+  next();
+};
+
+
+module.exports = { authMiddleware,verifyAdmin };
