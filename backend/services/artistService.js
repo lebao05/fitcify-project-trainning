@@ -1,41 +1,24 @@
 const ArtistProfile = require('../models/artistProfile');
 const ArtistVerificationRequest = require('../models/artistVerificationRequest');
+const Song = require('../models/song');
 
 module.exports = {
-
-  async fetchArtistProfiles(userId = null) {
-    if (userId) {
-      return ArtistProfile
-        .findOne({ userId })
-        .populate('userId', 'username email')
-        .populate('albums')
-        .populate('songs');
-    }
-    return ArtistProfile
-      .find()
-      .populate('userId', 'username email')
-      .sort({ createdAt: -1 });
+  async createSong(userId, data) {
+    const song = await Song.create({
+      title:      data.title,
+      artistId:   userId,
+      duration:   data.duration,
+      audioUrl:   data.audioUrl,
+      imageUrl:   data.imageUrl || '',
+      albumId:    data.albumId || null,
+      isApproved: false
+    });
+    return song;
   },
 
-
-  async upsertProfile(userId, data) {
-    let profile = await ArtistProfile.findOne({ userId });
-    if (profile) {
-      Object.assign(profile, data);
-      return profile.save();
-    }
-    return ArtistProfile.create({ userId, ...data });
-  },
-
-  async submitVerification(userId) {
-    const pending = await ArtistVerificationRequest.findOne({ userId, status: 'pending' });
-    if (pending) throw new Error('Yêu cầu xác thực đang chờ xử lý');
-    return ArtistVerificationRequest.create({ userId });
-  },
-
-  async fetchVerificationStatus(userId) {
-    return ArtistVerificationRequest
-      .findOne({ userId })
-      .sort({ submittedAt: -1 });
+  async getMySongs(userId) {
+    return Song.find({ artistId: userId })
+      .sort({ uploadedAt: -1 });
   }
 };
+

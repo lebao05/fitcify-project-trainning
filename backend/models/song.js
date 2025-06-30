@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const songSchema = new mongoose.Schema(
     {
         isApproved: { type: Boolean, default: false },
