@@ -8,7 +8,7 @@ router.post(
   "/songs",
   authMiddleware,
   isArtist,
-  uploadService.audioUploader.single("audioFile"),
+  uploadService.multiUploader, 
   artistController.uploadSong
 );
 

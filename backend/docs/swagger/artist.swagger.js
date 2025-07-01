@@ -16,7 +16,7 @@
  * @swagger
  * /api/artist/songs:
  *   post:
- *     summary: Upload a new song (audio only)
+ *     summary: Upload a new song (audio + optional image)
  *     tags: [Artist]
  *     security:
  *       - cookieAuth: []
@@ -28,18 +28,22 @@
  *             type: object
  *             required:
  *               - title
- *               - genre
  *               - audioFile
  *             properties:
  *               title:
  *                 type: string
- *               genre:
- *                 type: string
+ *                 description: Song title
  *               albumId:
  *                 type: string
+ *                 description: Optional album ID to associate song with
  *               audioFile:
  *                 type: string
  *                 format: binary
+ *                 description: Audio file (.mp3, .wav, etc.)
+ *               imageFile:
+ *                 type: string
+ *                 format: binary
+ *                 description: Optional image file for song cover
  *     responses:
  *       201:
  *         description: Song uploaded successfully

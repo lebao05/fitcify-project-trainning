@@ -4,9 +4,11 @@ const uploadSong = async (req, res) => {
   try {
     const artistId = req.user._id;
     const songData = req.body;
-    const audioFile = req.file;
 
-    const newSong = await artistService.createSong(artistId, songData, audioFile);
+    const audioFile = req.files?.audioFile?.[0];
+    const imageFile = req.files?.imageFile?.[0]; // optional
+
+    const newSong = await artistService.createSong(artistId, songData, audioFile, imageFile);
 
     res.status(201).json({
       Error: 0,

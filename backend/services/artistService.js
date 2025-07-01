@@ -5,7 +5,7 @@ const Song = require("../models/song");
 const ArtistProfile = require("../models/artistProfile");
 const mongoose = require("mongoose");
 
-const createSong = async (artistId, songData, audioFile) => {
+const createSong = async (artistId, songData, audioFile, imageFile) => {
   if (!songData.title || !audioFile || !audioFile.path) {
     throw new Error("Missing title or audio file");
   }
@@ -14,14 +14,20 @@ const createSong = async (artistId, songData, audioFile) => {
 
   const metadata = await mm.parseFile(filePath);
   const duration = Math.floor(metadata.format.duration || 0);
-  console.log(duration)
-
 
   const audioResult = await uploadToCloudinary(filePath, "fitcify/songs", "video");
-
-
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath);
+  }
+
+  let imageUrl = "";
+  if (imageFile && imageFile.path) {
+    const imageResult = await uploadToCloudinary(imageFile.path, "fitcify/song-covers", "image");
+    imageUrl = imageResult.secure_url;
+
+    if (fs.existsSync(imageFile.path)) {
+      fs.unlinkSync(imageFile.path);
+    }
   }
 
   let albumId = null;
@@ -35,7 +41,7 @@ const createSong = async (artistId, songData, audioFile) => {
     artistId,
     albumId,
     audioUrl: audioResult.secure_url,
-    imageUrl: "",
+    imageUrl, 
     playCount: 0,
     isApproved: false,
     uploadedAt: new Date()
