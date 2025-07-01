@@ -1,6 +1,7 @@
 // SpotifyProfile.jsx
 import React, { useState } from 'react';
 import ProfileHeader from '../components/ProfileHeader.jsx';
+import HorizontalDots from '../components/HorizontalDots.jsx';
 import SectionHeader from '../components/SectionHeader.jsx';
 import ArtistCard from '../components/ArtistCard.jsx';
 import TrackItem from '../components/TrackItem.jsx';
@@ -9,7 +10,7 @@ import ProfileFooter from '../components/ProfileFooter.jsx';
 import './UserProfile.scss';
 
 const UserProfile = () => {
-  const [activeSection, setActiveSection] = useState('overview');
+  const [playingArtistId, setPlayingArtistId] = useState(null);
 
   // Mock data
   const user = {
@@ -20,7 +21,7 @@ const UserProfile = () => {
   };
 
   const topArtists = [
-    { id: 1, name: 'SOOBIN', image: '/test.jpg', type: 'Artist' },
+    { id: 1, name: 'SOOBIN', image: '/test.jpg', type: 'Artist'},
     { id: 2, name: 'Sơn Tùng M-TP', image: '/test.jpg', type: 'Artist' },
     { id: 3, name: 'AMEE', image: '/test.jpg', type: 'Artist' },
     { id: 4, name: 'Vũ', image: '/test.jpg', type: 'Artist' },
@@ -83,20 +84,8 @@ const UserProfile = () => {
   ];
 
   // Event handlers
-  const handlePlay = (id) => {
-    console.log('Play:', id);
-  };
-
-  const handleLike = () => {
-    console.log('Like profile');
-  };
-
-  const handleFollow = () => {
-    console.log('Follow user');
-  };
-
-  const handleMore = (id) => {
-    console.log('More options:', id);
+  const handlePlay = (artistId) => {
+    setPlayingArtistId(artistId);
   };
 
   const handleShowAll = (section) => {
@@ -105,7 +94,8 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <ProfileHeader name={user.name} image={user.avatar} publicPlaylist={user.publicPlaylists} following={user.following} />
+      <ProfileHeader user={user} />
+      <HorizontalDots user={user}/>
 
       <div className="profile-content">
           {/* Top Artists */}
@@ -121,6 +111,8 @@ const UserProfile = () => {
                 <ArtistCard 
                   key={artist.id}
                   artist={artist}
+                  onPlay={() => handlePlay(artist.id)}
+                  showPlayingIndicator={playingArtistId === artist.id}
                 />
               ))}
             </div>
@@ -141,7 +133,6 @@ const UserProfile = () => {
                   track={track}
                   index={index}
                   onPlay={handlePlay}
-                  onMore={handleMore}
                 />
               ))}
             </div>

@@ -13,7 +13,18 @@ const PUBLIC_ROUTES = [
   { method: "GET", path: "/api/auth/google/callback" },
   { method: "GET", path: "/api/auth/facebook" },
   { method: "GET", path: "/api/auth/facebook/callback" },
+
+  // ✅ thêm các route swagger
+  { method: "GET", path: "/api-docs" },
+  { method: "GET", path: "/api-docs/" },
+  { method: "GET", path: "/api-docs/swagger-ui.css" },
+  { method: "GET", path: "/api-docs/swagger-ui-bundle.js" },
+  { method: "GET", path: "/api-docs/swagger-ui-init.js" },
+  { method: "GET", path: "/api-docs/swagger-ui-standalone-preset.js" },
+  { method: "GET", path: "/api-docs/favicon-32x32.png" },
+  { method: "GET", path: "/api-docs/favicon-16x16.png" },
 ];
+
 function isPublic(req) {
   return PUBLIC_ROUTES.some(
     (r) => r.method === req.method && r.path === req.path
@@ -28,7 +39,9 @@ const authMiddleware = async (req, res, next) => {
     try {
       payload = verifyToken(token);
     } catch (e) {
-      return res.status(401).json({ Error: 1, Message: "Invalid or expired token" });
+      return res
+        .status(401)
+        .json({ Error: 1, Message: "Invalid or expired token" });
     }
 
     validObjectId(payload.id);
