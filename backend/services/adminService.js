@@ -1,77 +1,120 @@
 // services/adminService.js
-const User = require("../models/user");
-const ArtistVerificationRequest = require("../models/artistVerificationRequest"); // cần có file này
+const User = require('../models/user');
+const ArtistProfile = require('../models/artistProfile');
+const ArtistVerificationRequest = require('../models/artistVerificationRequest');
 
-/**
- * Return every user, hiding sensitive fields.
- */
-const getAllUsers = async () => {
-  return await User.find();
-};
-
-// ✅ 1. Lấy tất cả yêu cầu xác minh nghệ sĩ
-const getVerificationRequests = async () => {
-  return await ArtistVerificationRequest.find({ status: "pending" }).populate(
-    "artistId"
-  );
-};
-
-// ✅ 2. Duyệt / từ chối yêu cầu xác minh nghệ sĩ
-const processVerificationRequest = async (
-  requestId,
-  decision,
-  adminId,
-  reason = null
-) => {
-  const request = await ArtistVerificationRequest.findById(requestId);
-  if (!request) throw new Error("Verification request not found");
-
-  request.status = decision;
-  request.reviewedBy = adminId;
-  request.reviewedAt = new Date();
-  if (decision === "reject") request.rejectionReason = reason;
-
-  await request.save();
-
-  if (decision === "approve") {
-    await User.findByIdAndUpdate(request.artistId, { isVerified: true });
-  }
-
-  return request;
-};
-
-// ✅ 3. Khoá tài khoản nghệ sĩ
 const suspendUser = async (userId, adminId, reason) => {
   return await User.findByIdAndUpdate(
     userId,
     {
       isSuspended: true,
       suspensionReason: reason,
-      suspendedBy: adminId,
-      suspendedAt: new Date(),
+      processedBy: adminId,
+      processedAt: new Date(),
     },
     { new: true }
   );
 };
 
-// ✅ 4. Mở khoá tài khoản nghệ sĩ
 const activateUser = async (userId, adminId) => {
   return await User.findByIdAndUpdate(
     userId,
     {
       isSuspended: false,
       suspensionReason: null,
-      suspendedBy: null,
-      suspendedAt: null,
+      processedBy: null,
+      processedAt: null,
     },
     { new: true }
   );
 };
+const getAllUsers = async () => User.find();
+
+const getVerificationRequests = async () =>
+  ArtistVerificationRequest.find({ status: 'pending' })
+    .populate('userId');
+
+
+const processVerificationRequest = async (
+  requestId,
+  decision,      // 'approve' | 'reject'
+  adminId,
+  reason = null
+) => {
+  const req = await ArtistVerificationRequest.findById(requestId);
+  if (!req) throw new Error('Verification request not found');
+
+  req.status = decision;
+  req.processedAt = new Date();
+  req.processedBy = adminId;
+  req.notes = reason;
+  await req.save();
+
+  if (decision === 'approve') {
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { isVerified: true, role: 'artist' },
+      { new: true }
+    );
+
+    let profile = await ArtistProfile.findOne({ userId: user._id });
+    if (!profile) {
+      profile = await ArtistProfile.create({ userId: user._id, isVerified: true });
+    } else if (!profile.isVerified) {
+      profile.isVerified = true;
+      await profile.save();
+    }
+
+    if (!user.artistProfile || !user.artistProfile.equals(profile._id)) {
+      user.artistProfile = profile._id;
+      await user.save();
+    }
+  }
+
+  return req;
+};
+
+/* ───────── moderation: suspend / activate ───────── */
+
+const suspendArtist = async (userId, adminId) => {
+  try {
+    const user = await ArtistProfile.findOneAndUpdate(
+      { userId },
+      {
+        isbaned: true,
+        bannedBy: adminId,
+        bannedAt: new Date()
+      }, { new: true }
+    );
+    return user
+  } catch (err) {
+    throw err;
+  }
+};
+
+const activateArtist = async (userId, adminId) => {
+  try {
+    const user = await ArtistProfile.findOneAndUpdate(
+      { userId },
+      {
+        isbaned: false,
+      }, { new: true } // ← return the *updated* doc
+
+    );
+    return user;
+  }
+  catch (err) {
+    throw err;
+  }
+};
+
 
 module.exports = {
   getAllUsers,
   getVerificationRequests,
   processVerificationRequest,
+  suspendArtist,
+  activateArtist,
   suspendUser,
   activateUser,
 };

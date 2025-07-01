@@ -13,7 +13,12 @@
   display: flex; 
   flex-direction: row;
   align-items: center;
-  margin-bottom: 1rem;
+  padding: 0.5rem;
+
+  &:hover{
+    cursor: pointer;
+    background-color: #252424;
+  }
 
   .track-info{
     display: grid;
