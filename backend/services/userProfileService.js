@@ -1,4 +1,4 @@
-// services/userProfileService.js
+
 const User = require('../models/user');
 const cloudinary = require('../configs/cloudinary');
 const { uploadToCloudinary } = require('../services/cloudinaryService');
@@ -64,11 +64,11 @@ const updateProfileInfo = async (req, res, next) => {
 
     if (req.file) {
       const { secure_url } = await uploadToCloudinary(req.file.path, 'avatars');
-      await fs.unlink(req.file.path).catch(() => {});
+      await fs.unlink(req.file.path);
       const user = await User.findById(req.user.id).select('avatarUrl');
       if (user && user.avatarUrl) {
         const oldId = extractPublicId(user.avatarUrl);
-        if (oldId) cloudinary.uploader.destroy(oldId).catch(console.error);
+        if (oldId) cloudinary.uploader.destroy(oldId);
       }
       updates.avatarUrl = secure_url;
     }
@@ -110,7 +110,7 @@ const deleteProfileAvatar = async (req, res, next) => {
 
     if (user.avatarUrl) {
       const id = extractPublicId(user.avatarUrl);
-      if (id) cloudinary.uploader.destroy(id).catch(console.error);
+      if (id) cloudinary.uploader.destroy(id);
       user.avatarUrl = '';
       await user.save();
     }
