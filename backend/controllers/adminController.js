@@ -128,7 +128,24 @@ const activateUser = async (req, res, next) => {
     next(err);
   }
 };
+async function approveSong(req, res, next) {
+  try {
+    const song = await adminService.approveSong(req.params.songId, req.user._id);
+    res.json({ Message: 'Song approved', Error: 0, Data: song });
+  } catch (err) {
+    next(err);
+  }
+}
 
+async function rejectSong(req, res, next) {
+  try {
+    const reason = req.body.reason || '';
+    const song = await adminService.rejectSong(req.params.songId, req.user._id, reason);
+    res.json({ Message: 'Song rejected', Error: 0, Data: song });
+  } catch (err) {
+    next(err);
+  }
+}
 module.exports = {
   getAllUsers,
   getAllArtistVerificationRequests,
@@ -138,4 +155,6 @@ module.exports = {
   activateArtist,
   suspendUser,
   activateUser,
+  approveSong,
+  rejectSong
 };

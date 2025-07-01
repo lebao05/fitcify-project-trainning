@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/adminController");
-const {isAdmin } = require("../middlewares/authMiddleware");
+const { isAdmin } = require("../middlewares/authMiddleware");
 router.use(isAdmin);
 router.get("/users", adminController.getAllUsers);
 router.patch("/users/:id/suspend", adminController.suspendUser);
@@ -21,5 +21,7 @@ router.patch(
 );
 router.patch("/artists/:userId/suspend", adminController.suspendArtist);
 router.patch("/artists/:userIdid/activate", adminController.activateArtist);
+router.post('/admin/songs/:songId/approve', adminController.approveSong);
+router.post('/admin/songs/:songId/reject', adminController.rejectSong);
 
 module.exports = router;

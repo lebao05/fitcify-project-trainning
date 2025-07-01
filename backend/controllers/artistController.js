@@ -18,4 +18,30 @@ const submitVerificationRequest = async (req, res, next) => {
 };
 
 
-module.exports = { submitVerificationRequest };
+const uploadSong = async (req, res, next) => {
+    try {
+        const { title, duration, albumId } = req.body;
+
+        if (!req.files?.audio) {
+            return res.status(400).json({ Error: 1, Message: 'Audio file is required' });
+        }
+        const songDoc = await artistService.uploadSong({
+            artistUserId: req.user._id,
+            title,
+            duration: Number(duration),
+            audioPath: req.files.audio[0].path,
+            imagePath: req.files?.image?.[0]?.path ?? null,
+            albumId: albumId || null,
+        });
+
+        res.status(201).json({
+            Message: 'Song uploaded, awaiting approval',
+            Error: 0,
+            Data: songDoc,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+module.exports = { submitVerificationRequest, uploadSong };
+

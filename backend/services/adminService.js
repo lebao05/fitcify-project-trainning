@@ -2,7 +2,7 @@
 const User = require('../models/user');
 const ArtistProfile = require('../models/artistProfile');
 const ArtistVerificationRequest = require('../models/artistVerificationRequest');
-
+const Song = require('../models/song');
 const suspendUser = async (userId, adminId, reason) => {
   return await User.findByIdAndUpdate(
     userId,
@@ -108,7 +108,24 @@ const activateArtist = async (userId, adminId) => {
   }
 };
 
+async function approveSong(songId, adminId) {
+  const song = await Song.findById(songId);
+  if (!song) throw new Error('Song not found');
+  song.isApproved = true;
+  // song.approvedAt = new Date();
+  // song.approvedBy = adminId;
+  return await song.save();
+}
 
+async function rejectSong(songId, adminId, reason = '') {
+  const song = await Song.findById(songId);
+  if (!song) throw new Error('Song not found');
+  song.isApproved = false;
+  // song.rejectionReason = reason;
+  // song.rejectedAt = new Date();
+  // song.rejectedBy = adminId;
+  return await song.save();
+}
 module.exports = {
   getAllUsers,
   getVerificationRequests,
@@ -117,4 +134,6 @@ module.exports = {
   activateArtist,
   suspendUser,
   activateUser,
+  approveSong,
+  rejectSong
 };
