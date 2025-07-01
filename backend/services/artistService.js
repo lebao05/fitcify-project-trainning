@@ -4,6 +4,8 @@ const fs = require("fs");
 const Song = require("../models/song");
 const ArtistProfile = require("../models/artistProfile");
 const mongoose = require("mongoose");
+const extractCloudinaryPublicId = require("../helpers/cloudinaryPublicID");
+const cloudinary = require("../configs/cloudinary");
 
 const createSong = async (artistId, songData, audioFile, imageFile) => {
   if (!songData.title || !audioFile || !audioFile.path) {
@@ -58,6 +60,44 @@ const createSong = async (artistId, songData, audioFile, imageFile) => {
   return newSong;
 };
 
+const deleteSong = async (songId, artistId) => {
+  if (!mongoose.Types.ObjectId.isValid(songId)) {
+    throw new Error("Invalid song ID");
+  }
+
+  const song = await Song.findById(songId);
+  if (!song) {
+    throw new Error("Song not found");
+  }
+
+  if (song.artistId.toString() !== artistId.toString()) {
+    throw new Error("Unauthorized: You do not own this song");
+  }
+
+  const audioPublicId = extractCloudinaryPublicId(song.audioUrl);
+  console.log(audioPublicId)
+  if (audioPublicId) {
+    await cloudinary.uploader.destroy(audioPublicId, { resource_type: "video" });
+  }
+
+  const imagePublicId = extractCloudinaryPublicId(song.imageUrl);
+  console.log(imagePublicId)
+  if (imagePublicId) {
+    await cloudinary.uploader.destroy(imagePublicId, { resource_type: "image" });
+  }
+
+  await ArtistProfile.updateOne(
+    { userId: artistId },
+    { $pull: { songs: song._id } }
+  );
+
+  await song.deleteOne();
+
+  return true;
+};
+
+
 module.exports = {
   createSong,
+  deleteSong,
 };

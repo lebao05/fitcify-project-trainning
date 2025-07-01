@@ -12,4 +12,12 @@ router.post(
   artistController.uploadSong
 );
 
+router.delete(
+  "/songs/:songId",
+  authMiddleware,
+  isArtist,
+  artistController.deleteSong
+);
+
+
 module.exports = router;
