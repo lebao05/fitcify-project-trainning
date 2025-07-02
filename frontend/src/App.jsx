@@ -12,9 +12,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/signup" element={<Signuppage/>} />
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<HomePage/>} />
-          <Route path="/profile" element={<UserProfile/>} />
+        <Route path="" element={<HomePage/>} />
+
+        <Route path='/user' element={<MainLayout />}>
+          <Route path="profile" element={<UserProfile/>} />
         </Route>
       </Routes>
     </Router>
