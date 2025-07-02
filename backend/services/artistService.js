@@ -6,6 +6,8 @@ const ArtistVerificationRequest = require("../models/artistVerificationRequest")
 const Song = require('../models/song');
 const ContentVerificationRequest = require('../models/contentVerificationRequest'); // your content model
 const { uploadToCloudinary } = require('../services/cloudinaryService');
+const cloudinary = require("../configs/cloudinary");
+const extractCloudinaryPublicId = require('../helpers/extractPublicId');
 const submitArtistVerificationRequest = async (userId, notes = null) => {
     // 1️⃣ Ensure the user exists
     const user = await User.findById(userId);
@@ -78,7 +80,50 @@ async function uploadSong({
 
     return song;
 }
+async function updateSong(
+    songId,
+    artistUserId,
+    { title, duration, albumId = null, audioPath = null, imagePath = null }
+) {
+    const song = await Song.findById(songId);
+    if (!song) throw new Error('Song not found');
+    if (!song.artistId.equals(artistUserId))
+        throw new Error('You do not have permission to modify this song');
 
+    const updates = {};
+    if (title) updates.title = title;
+    if (duration) updates.duration = duration;
+    if (albumId && mongoose.Types.ObjectId.isValid(albumId))
+        updates.albumId = albumId;
+
+    let assetReplaced = false;
+
+    /* 2️⃣ Replace audio */
+    if (audioPath) {
+        // destroy old audio (resource_type: 'video')
+        const oldAudioId = extractCloudinaryPublicId(song.audioUrl);
+        if (oldAudioId) await cloudinary.uploader.destroy(oldAudioId, { resource_type: 'video' });
+
+        const audioRes = await uploadToCloudinary(audioPath, 'songs', {
+            resource_type: 'video',
+            use_filename: true,
+            unique_filename: true,
+        });
+        updates.audioUrl = audioRes.secure_url;
+        assetReplaced = true;
+    }
+
+    /* 3️⃣ Replace image */
+    if (imagePath) {
+        const oldImgId = extractCloudinaryPublicId(song.imageUrl);
+        if (oldImgId) await cloudinary.uploader.destroy(oldImgId, { resource_type: 'image' });
+        const imgRes = await uploadToCloudinary(imagePath, 'covers');
+        updates.imageUrl = imgRes.secure_url;
+        assetReplaced = true;
+    }
+    return await Song.findByIdAndUpdate(songId, updates, { new: true });
+}
 module.exports = {
-    submitArtistVerificationRequest, uploadSong
+    submitArtistVerificationRequest, uploadSong, updateSong
 };
+

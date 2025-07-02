@@ -104,3 +104,49 @@
  *       500:
  *         description: Server error / Cloudinary upload failed
  */
+/**
+ * @swagger
+ * /api/artist/update-song/{songId}:
+ *   put:
+ *     summary: Update an existing song (title, audio, image, album, etc.)
+ *     tags: [Artist]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: songId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the song to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               duration:
+ *                 type: number
+ *                 example: 180
+ *               albumId:
+ *                 type: string
+ *                 description: Optional album ID to reassign
+ *               audio:
+ *                 type: string
+ *                 format: binary
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Song updated successfully
+ *       400:
+ *         description: Validation failed or bad input
+ *       403:
+ *         description: Not the song owner
+ *       500:
+ *         description: Server or Cloudinary error
+ */

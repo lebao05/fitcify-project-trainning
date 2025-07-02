@@ -43,5 +43,30 @@ const uploadSong = async (req, res, next) => {
         next(err);
     }
 };
-module.exports = { submitVerificationRequest, uploadSong };
+
+const updateSong = async (req, res, next) => {
+    try {
+        const { title, duration, albumId } = req.body;
+        const { songId } = req.params;
+
+        const audioPath = req.files?.audio?.[0]?.path ?? null;
+        const imagePath = req.files?.image?.[0]?.path ?? null;
+
+        const song = await artistService.updateSong(songId, req.user._id, {
+            title,
+            duration: duration ? Number(duration) : undefined,
+            albumId,
+            audioPath,
+            imagePath,
+        });
+
+        res.status(200).json({
+            Message: 'Song updated successfully',
+            Error: 0, Data: song,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+module.exports = { submitVerificationRequest, uploadSong, updateSong };
 
