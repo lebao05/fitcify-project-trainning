@@ -6,7 +6,16 @@ const playlistSchema = new mongoose.Schema(
         ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         isPublic: { type: Boolean, default: true },
         imageUrl: { type: String, default: '' },
-        songs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }],
+        songs: [{
+            type: mongoose.Schema.Types.ObjectId, addedAt: Date,
+            position: Number,
+            ref: 'Song'
+        }], 
+        followers: [{
+            type: mongoose.Schema.Types.ObjectId, addedAt: Date,
+            ref: 'User'
+        }],
+
     },
     { timestamps: true }
 );

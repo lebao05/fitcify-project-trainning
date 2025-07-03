@@ -12,6 +12,7 @@ const port = process.env.PORT || 3000;
 const authRoute = require("./routes/authRoute");
 const adminRoute = require("./routes/adminRoute");
 const artistRoute = require("./routes/artistRoute");
+const userRoute = require("./routes/userRoute");
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
@@ -52,8 +53,9 @@ app.use(
   })
 );
 app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);
-app.use("/api/artist",artistRoute);
+app.use("/api/artist", artistRoute);
 app.use('/uploads', express.static('uploads'));
 app.get("/", (req, res) => {
   res.send("Hello World!");
