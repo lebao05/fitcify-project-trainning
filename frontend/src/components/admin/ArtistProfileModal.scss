@@ -1,0 +1,101 @@
+.artist-modal__overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.artist-modal__container {
+  background: #181f28;
+  border-radius: 14px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  padding: 32px 36px 28px 36px;
+  min-width: 350px;
+  max-width: 480px;
+  width: 100%;
+  color: #e0e0e0;
+  position: relative;
+  animation: modalIn 0.18s cubic-bezier(.4,1.6,.6,1) both;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.artist-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #23272f;
+  border: none;
+  border-radius: 6px;
+  color: #b3b3b3;
+  font-size: 1.25rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.artist-modal__close:hover {
+  background: #e53935;
+  color: #fff;
+}
+.artist-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.artist-modal__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #23272f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+}
+.artist-modal__name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+}
+.artist-modal__info-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 32px;
+  margin-bottom: 18px;
+}
+.artist-modal__info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.08rem;
+  color: #b3b3b3;
+}
+.artist-modal__section {
+  margin-bottom: 18px;
+}
+.artist-modal__section-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #fff;
+}
+.artist-modal__section-content {
+  font-size: 1rem;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+.artist-modal__section-content a {
+  color: #1ed760;
+  text-decoration: underline;
+  word-break: break-all;
+}
