@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import "./SignupPage.scss";
-import { Navigate, useNavigate } from "react-router-dom";
+import "../../styles/authentication/LoginPage.scss";
 
-export default function SpotifyLogin() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const nagivate = useNavigate();
+
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -18,7 +17,12 @@ export default function SpotifyLogin() {
       setShowError(false);
     }
   };
-
+  const handleLoginWithGoogle = () => {
+    window.location.href = "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
+  };
+  const handleLoginWithFacebook = () => {
+    window.location.href = "http://localhost:5000/api/auth/facebook"; 
+  }
   const handleContinue = async () => {
     if (!email.trim()) {
       setShowError(true);
@@ -29,14 +33,16 @@ export default function SpotifyLogin() {
       setShowError(true);
       return;
     }
-  };
 
-  const handleSignupWithGoogle = () => {
-    window.location.href = "http://localhost:5000/api/auth/google"; // Adjust the URL to your backend endpoint
+    setIsLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      console.log("Continue with email:", email);
+      setIsLoading(false);
+      // Handle login logic here
+    }, 1500);
   };
-  const handleSignupWithFacebook = () => {
-    window.location.href = "http://localhost:5000/api/auth/facebook"; 
-  }
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleContinue();
@@ -46,13 +52,13 @@ export default function SpotifyLogin() {
   return (
     <div className="login-page">
       <div className="login-container">
-        <div className="title">Sign up to start listening</div>
+        <div className="title">Log in to Fitcify</div>
         <div className="login-with">
           <div
             className="login-option google"
             role="button"
             tabIndex={0}
-            onClick={() => handleSignupWithGoogle()}
+            onClick={() => handleLoginWithGoogle()}
           >
             Continue with Google
           </div>
@@ -61,7 +67,7 @@ export default function SpotifyLogin() {
             className="login-option facebook"
             role="button"
             tabIndex={0}
-            onClick={() => handleSignupWithFacebook()}
+            onClick={() => handleLoginWithFacebook()}
           >
             Continue with Facebook
           </div>
@@ -96,20 +102,41 @@ export default function SpotifyLogin() {
           </div>
 
           <div className="continue-button">
-            <button onClick={handleContinue}>Next</button>
+            <button
+              onClick={handleContinue}
+              disabled={isLoading}
+              aria-label={isLoading ? "Logging in..." : "Continue"}
+            >
+              {isLoading ? "Logging in..." : "Continue"}
+            </button>
           </div>
         </div>
         <div className="further-options">
           <div className="no-account-registered">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <span
               className="link"
-              onClick={() => nagivate("/login")}
+              onClick={() => console.log("Navigate to sign up")}
               role="button"
               tabIndex={0}
+              onKeyPress={(e) =>
+                e.key === "Enter" && console.log("Navigate to sign up")
+              }
             >
-              Log in here.
+              Sign up for Spotify
             </span>
+          </div>
+
+          <div
+            className="forgot-password"
+            onClick={() => console.log("Navigate to forgot password")}
+            role="button"
+            tabIndex={0}
+            onKeyPress={(e) =>
+              e.key === "Enter" && console.log("Navigate to forgot password")
+            }
+          >
+            Forgot your password?
           </div>
         </div>
       </div>

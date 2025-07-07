@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Home, Search, Bell, Users } from "lucide-react";
-import "./HeaderBar.scss";
+import "../../styles/user/HeaderBar.scss";
 import { useNavigate } from "react-router-dom";
 const HeaderBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

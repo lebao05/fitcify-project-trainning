@@ -17,7 +17,6 @@ passport.use(
           username: profile.displayName,
           facebookId: profile.id,
         });
-
         return done(null, user);
       } catch (err) {
         return done(err, null);
