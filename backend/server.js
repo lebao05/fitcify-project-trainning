@@ -7,15 +7,20 @@ const { authMiddleware } = require('./middlewares/authMiddleware');
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./configs/swagger");
 const cookieParser = require("cookie-parser");
+
 const app = express();
 const port = process.env.PORT || 3000;
+
 const authRoute = require("./routes/authRoute");
 const adminRoute = require("./routes/adminRoute");
 const artistRoute = require("./routes/artistRoute");
 const userRoute = require("./routes/userRoute");
+const paymentRoutes = require('./routes/paymentRoute');
 const session = require("express-session");
 const passport = require("passport");
 const cors = require("cors");
+
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser());
 app.use(
   cors({
@@ -33,7 +38,9 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(authMiddleware);
+
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(morgan("dev"));
@@ -56,7 +63,10 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/artist", artistRoute);
+app.use('/api/payment', paymentRoutes);
+
 app.use('/uploads', express.static('uploads'));
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
