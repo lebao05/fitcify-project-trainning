@@ -3,3 +3,30 @@
 :root {
   font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
 }
+/* 🚫  Global hide (stays) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅  Override only in .scroll-on-hover */
+.scroll-on-hover {
+  overflow-y: hidden;
+}
+.scroll-on-hover:hover {
+  overflow-y: auto;
+}
+
+/* turn the scrollbar back ON */
+.scroll-on-hover::-webkit-scrollbar {
+  display: block; 
+  width: 12px;
+}
+
+/* style */
+.scroll-on-hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-on-hover::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
