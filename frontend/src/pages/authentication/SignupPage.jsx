@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../styles/authentication/SignupPage.scss";
 import { Navigate, useNavigate } from "react-router-dom";
 
-export default function SpotifyLogin() {
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/authentication/LoginPage.scss";
 
-export default function SpotifyLogin() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
