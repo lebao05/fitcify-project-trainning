@@ -7,7 +7,7 @@ import ArtistCard from "../../components/user/ArtistCard.jsx";
 import TrackItem from "../../components/user/TrackItem.jsx";
 import PlaylistCard from "../../components/user/PlaylistCard.jsx";
 import ProfileFooter from "../../components/user/ProfileFooter.jsx";
-import "./UserProfile.scss";
+
 
 const UserProfile = () => {
   const [playingArtistId, setPlayingArtistId] = useState(null);
@@ -55,7 +55,6 @@ const UserProfile = () => {
       album: "Pháp Màu - Đàn Ca Gỗ Original Soundtrack",
       duration: "4:26",
       image: "/test.jpg",
-      isPlaying: true,
     },
     {
       id: 4,
@@ -99,40 +98,47 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="user-profile-content h-full overflow-y-auto pr-4">
+    <div className="user-profile-content min-h-screen bg-gradient-to-br from-[#232526] to-[#181818] overflow-y-auto overflow-x-hidden">
       <ProfileHeader user={user} />
-      <HorizontalDots user={user} />
 
-      <div className="profile-content">
+  <div className="profile-content w-full max-w-6xl mx-auto">
+        <HorizontalDots user={user} className=""/>
+
         {/* Top Artists */}
-        <section className="artist-section">
+        <section className="artist-section my-8">
           <SectionHeader
             title="Top artists this month"
             subtitle="Only visible to you"
             showAll={true}
             onShowAll={() => handleShowAll("artists")}
           />
-          <div className="artists-card-container">
-            {topArtists.map((artist) => (
-              <ArtistCard
+          <div
+            className="artists-card-container grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 pt-2 w-full justify-items-center"
+          >
+            {topArtists.slice(0, 6).map((artist) => (
+              <div
                 key={artist.id}
-                artist={artist}
-                onPlay={() => handlePlay(artist.id)}
-                showPlayingIndicator={playingArtistId === artist.id}
-              />
+                className="min-w-[180px] max-w-[200px]"
+              >
+                <ArtistCard
+                  artist={artist}
+                  onPlay={() => handlePlay(artist.id)}
+                  showPlayingIndicator={playingArtistId === artist.id}
+                />
+              </div>
             ))}
           </div>
         </section>
 
         {/* Top Tracks */}
-        <section className="tracks-section">
+        <section className="tracks-section my-8 text-white">
           <SectionHeader
             title="Top tracks this month"
             subtitle="Only visible to you"
             showAll={true}
             onShowAll={() => handleShowAll("tracks")}
           />
-          <div className="tracks-item-container">
+          <div className="tracks-item-container mt-4 flex flex-col">
             {topTracks.map((track, index) => (
               <TrackItem
                 key={track.id}
@@ -145,35 +151,37 @@ const UserProfile = () => {
         </section>
 
         {/* Public Playlists */}
-        <section className="playlists-section">
-          <SectionHeader title="Public Playlists" showAll={true} />
-          <div className="playlists-container">
-            {playlists.map((playlist) => (
-              <PlaylistCard
-                key={playlist.id}
-                playlist={playlist}
-                onPlay={handlePlay}
-                isButton="true"
-              />
+        <section className="playlists-section my-8 text-white">
+          <SectionHeader title="Public Playlists" subtitle="Public" showAll={true} />
+          <div className="playlists-container grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 justify-items-center pt-2 w-full">
+            {playlists.slice(0, 6).map((playlist) => (
+              <div key={playlist.id} className="min-w-[180px] max-w-[200px]">
+                <PlaylistCard
+                  playlist={playlist}
+                  onPlay={handlePlay}
+                  isButton="true"
+                />
+              </div>
             ))}
           </div>
         </section>
 
-        <section className="following-artists-section">
-          <SectionHeader title="Following" showAll={true} />
-          <div className="following-artists-container">
-            {followingArtists.map((artist) => (
-              <ArtistCard
-                key={artist.id}
-                artist={artist}
-                onPlay={handlePlay}
-                showPlayingIndicator={true}
-              />
+        <section className="following-artists-section my-8 text-white">
+          <SectionHeader title="Following" subtitle="Public" showAll={true} />
+          <div className="following-artists-container grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 justify-items-center pt-2 w-full">
+            {followingArtists.slice(0, 6).map((artist) => (
+              <div key={artist.id} className="min-w-[180px] max-w-[200px]">
+                <ArtistCard
+                  artist={artist}
+                  onPlay={handlePlay}
+                  showPlayingIndicator={true}
+                />
+              </div>
             ))}
           </div>
         </section>
+        <ProfileFooter />
       </div>
-      <ProfileFooter />
     </div>
   );
 };

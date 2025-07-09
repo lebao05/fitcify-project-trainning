@@ -97,7 +97,7 @@ const HeaderBar = () => {
                   <button className="dropdown-item">Account</button>
                   <button
                     className="dropdown-item"
-                    onClick={() => navigate("/user-profile")}
+                    onClick={() => navigate("/profile")}
                   >
                     Profile
                   </button>
