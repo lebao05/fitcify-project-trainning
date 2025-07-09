@@ -7,7 +7,7 @@ const MainPlayout = () => {
   return (
     <div>
       <HeaderBar />
-      <div className="h-screen  bg-black">
+      <div className="h-screen bg-black">
         <div className="h-[100%] flex">
           <Sidebar />
           <Display></Display>

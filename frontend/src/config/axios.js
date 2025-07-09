@@ -1,20 +1,17 @@
 import axios from "axios";
+
 const instance = axios.create({
-    baseURL: "http://localhost:8081/",
-    timeout: 1000,
+  baseURL: "http://localhost:5000/",
+  withCredentials: true, // 🔑 Important to send cookies
 });
+
 instance.interceptors.request.use(
-    function (config) {
-        const persistRoot = JSON.parse(localStorage.getItem("persist:root"));
-        const loginData = persistRoot?.login ? JSON.parse(persistRoot.login) : null;
-        const accessToken = loginData?.account?.accessToken;
-        if (access_token) {
-            config.headers["Authorization"] = `Bearer ${accessToken}`;
-        }
-        return config;
-    },
-    function (error) {
-        return Promise.reject(error);
-    }
+  function (config) {
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
 );
+
 export default instance;

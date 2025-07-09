@@ -22,7 +22,7 @@ const HeaderBar = () => {
       <div className="header-content">
         {/* Left Section - Logo */}
         <div className="left-section">
-          <div className="logo">
+          <div className="logo" onClick={() => (window.location.href = "/")}>
             <img src="../../public/logo.jpg" />
           </div>
         </div>
@@ -30,7 +30,10 @@ const HeaderBar = () => {
         {/* Center Section - Navigation and Search */}
         <div className="center-section">
           {/* Home Button */}
-          <button className="home-btn">
+          <button
+            className="home-btn"
+            onClick={() => (window.location.href = "/")}
+          >
             <Home size={25} />
           </button>
 
@@ -92,9 +95,12 @@ const HeaderBar = () => {
                 {/* Dropdown Menu */}
                 <div className={`navigation-bar ${navOpen ? "active" : ""}`}>
                   <button className="dropdown-item">Account</button>
-                  <button className="dropdown-item"
+                  <button
+                    className="dropdown-item"
                     onClick={() => navigate("/user-profile")}
-                  >Profile</button>
+                  >
+                    Profile
+                  </button>
                   <button className="dropdown-item">Upgrade to Premium</button>
                   <button className="dropdown-item">Support</button>
                   <button className="dropdown-item">Download</button>
